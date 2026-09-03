@@ -1,0 +1,14 @@
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+<rect width="800" height="800" fill="#f2efe9"/>
+<rect x="16" y="16" width="768" height="768" fill="none" stroke="#1a1a1a" stroke-opacity="0.08" stroke-width="2"/>
+
+<rect x="190" y="340" width="180" height="130" rx="30" fill="none" stroke="#1a1a1a" stroke-width="10"/>
+<rect x="430" y="340" width="180" height="130" rx="30" fill="none" stroke="#1a1a1a" stroke-width="10"/>
+<line x1="370" y1="380" x2="430" y2="380" stroke="#1a1a1a" stroke-width="10"/>
+<line x1="190" y1="380" x2="120" y2="350" stroke="#1a1a1a" stroke-width="8" stroke-linecap="round"/>
+<line x1="610" y1="380" x2="680" y2="350" stroke="#1a1a1a" stroke-width="8" stroke-linecap="round"/>
+<rect x="200" y="350" width="160" height="110" rx="22" fill="#a9824c" fill-opacity="0.18"/>
+<rect x="440" y="350" width="160" height="110" rx="22" fill="#a9824c" fill-opacity="0.18"/>
+
+<text x="400" y="740" font-family="Georgia, 'Times New Roman', serif" font-size="22" letter-spacing="6" fill="#1a1a1a" fill-opacity="0.55" text-anchor="middle">MH ACCESSORIES</text>
+</svg>
