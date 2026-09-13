@@ -511,6 +511,149 @@
         p, h1, h2, h3 { word-break: break-word; }
         input, select, textarea, button { max-width: 100%; }
         img { max-width: 100%; height: auto; }
+        /* ═══════════════════════════════════════════════════════════════
+   الكود الناقص من ZIRA — ضيفه في نهاية ملف <style> بتاع SHIFT
+   (أو أي مكان داخل الـ <style> tag، الترتيب مش مهم)
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+ /* ─── Collections / About / Philosophy: Mobile — Title beside image, description below ─── */
+
+/* Collections — النص شمال، الصور يمين */
+.collections-inner {
+    display: grid;
+    grid-template-columns: 1fr 48%;
+    grid-template-areas:
+        "label img"
+        "title img"
+        "desc desc"
+        "link link";
+    gap: 0.4rem 1rem;
+    padding: 0 1rem;
+}
+.collections-images { grid-area: img; }
+.collections-text { display: contents; }
+.collections-text .label { grid-area: label; align-self: end; }
+.collections-text h2    { grid-area: title; align-self: start; }
+.collections-text p     { grid-area: desc; margin-top: 0.6rem; }
+.collections-link       { grid-area: link; }
+
+.collections-text .label {
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+}
+.collections-text h2 {
+    font-size: 1.15rem;
+    line-height: 1.25;
+}
+.collections-text p {
+    font-size: 0.8rem;
+    line-height: 1.65;
+}
+.collections-link {
+    font-size: 0.65rem;
+}
+
+/* About */
+.about-inner {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    grid-template-areas:
+        "img label"
+        "img title"
+        "desc desc"
+        "link link";
+    gap: 0.4rem 1rem;
+    padding: 0 1rem;
+}
+.about-image { grid-area: img; }
+.about-text { display: contents; }
+.about-text .label { grid-area: label; align-self: end; }
+.about-text h2    { grid-area: title; align-self: start; }
+.about-text p     { grid-area: desc; margin-top: 0.6rem; }
+.about-link       { grid-area: link; }
+
+.about-text .label {
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+}
+.about-text h2 {
+    font-size: 1.15rem;
+    line-height: 1.25;
+}
+.about-text p {
+    font-size: 0.8rem;
+    line-height: 1.65;
+}
+.about-link {
+    font-size: 0.65rem;
+}
+
+/* Philosophy */
+.philosophy-inner {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    grid-template-areas:
+        "img label"
+        "img title"
+        "desc desc"
+        "grid grid";
+    gap: 0.4rem 1rem;
+    padding: 0 1rem;
+}
+.philosophy-image { grid-area: img; }
+.philosophy-text { display: contents; }
+.philosophy-text .label { grid-area: label; align-self: end; }
+.philosophy-text h2    { grid-area: title; align-self: start; }
+.philosophy-text p     { grid-area: desc; margin-top: 0.6rem; }
+.philosophy-grid       { grid-area: grid; margin-top: 1rem; }
+
+.philosophy-text .label {
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+}
+.philosophy-text h2 {
+    font-size: 1.15rem;
+    line-height: 1.25;
+}
+.philosophy-text p {
+    font-size: 0.8rem;
+    line-height: 1.65;
+}
+.philosophy-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    padding-top: 1rem;
+}
+
+/* الصور تفضل بنفس شكل اللابتوب */
+.collections-image-main img,
+.collections-image-stacked img,
+.about-image img,
+.philosophy-image img {
+    cursor: pointer;
+}
+}
+
+/* ─── Clickable Images Mobile (تأثير اللمس على الصور) ────────────── */
+@media (max-width: 768px) {
+    .collections-image-main img,
+    .collections-image-stacked img,
+    .weekly-image img,
+    .about-image img,
+    .philosophy-image img {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .collections-image-main img:active,
+    .collections-image-stacked img:active,
+    .weekly-image img:active,
+    .about-image img:active,
+    .philosophy-image img:active {
+        transform: scale(1.02);
+    }
+}
     </style>
 </head>
 
