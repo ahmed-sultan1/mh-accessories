@@ -191,22 +191,20 @@ app.get('/api/orders/completed', async (req, res) => {
 
 app.post('/api/orders', async (req, res) => {
     try {
-        let { orderId, name, email, phone, address, city, postcode, paymentMethod, items, subtotal, shipping, total } = req.body;
-        if (!name || !phone || !address || !city) return res.status(400).json({ success: false, message: 'Missing required fields' });
-        if (!items || !Array.isArray(items) || items.length === 0) return res.status(400).json({ success: false, message: 'Order must include items' });
+        let { name, email, phone, address, city, postcode, paymentMethod, items, subtotal, shipping, total } = req.body;
+if (!name || !phone || !address || !city) return res.status(400).json({ success: false, message: 'Missing required fields' });
+if (!items || !Array.isArray(items) || items.length === 0) return res.status(400).json({ success: false, message: 'Order must include items' });
 
-        if (!orderId) {
-            const allOrders = await col('orders').find({}).toArray();
-            const allCompleted = await col('completed').find({}).toArray();
-            let maxNum = 0;
-            [...allOrders, ...allCompleted].forEach(o => {
-                if (o.orderId && o.orderId.startsWith('MH-')) {
-                    let num = parseInt(o.orderId.replace('MH-', ''));
-                    if (!isNaN(num) && num > maxNum) maxNum = num;
-                }
-            });
-            orderId = 'MH-' + String(maxNum + 1).padStart(4, '0');
-        }
+const allOrders = await col('orders').find({}).toArray();
+const allCompleted = await col('completed').find({}).toArray();
+let maxNum = 0;
+[...allOrders, ...allCompleted].forEach(o => {
+    if (o.orderId && o.orderId.startsWith('MH-')) {
+        let num = parseInt(o.orderId.replace('MH-', ''));
+        if (!isNaN(num) && num > maxNum) maxNum = num;
+    }
+});
+const orderId = 'MH-' + String(maxNum + 1).padStart(4, '0');
 
        const newOrder = { orderId, name, email: email || '', phone, address, city, postcode: postcode || '', date: new Date().toLocaleString(), paymentMethod: paymentMethod || 'cod', items, subtotal: Number(subtotal) || 0, shipping: Number(shipping) || 0, total: Number(total) || 0, status: 'pending' };
 await col('orders').insertOne(newOrder);
