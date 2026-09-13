@@ -1498,48 +1498,55 @@
         }
 
         window.validateAndSendOrder = async function() {
-            if(cart.length === 0){ showToast("Cart empty"); return; }
-            if(!validateShippingForm()){ showToast("Fill details"); return; }
-            if(!selectedPaymentMethod){ showToast("Select payment"); return; }
+    if(cart.length === 0){ showToast("Cart empty"); return; }
+    if(!validateShippingForm()){ showToast("Fill details"); return; }
+    if(!selectedPaymentMethod){ showToast("Select payment"); return; }
 
-            let orderId = generateOrderId();
-            let subtotal = cart.reduce((s,i)=>s+i.price,0);
-            let shipping = calculateShippingPrice();
-            let total = subtotal + shipping;
+    let subtotal = cart.reduce((s,i)=>s+i.price,0);
+    let shipping = calculateShippingPrice();
+    let total = subtotal + shipping;
 
-            let orderData = {
-                orderId: orderId,
-                name: document.getElementById('fullName').value,
-                email: document.getElementById('emailAddress').value,
-                phone: document.getElementById('phoneNumber').value,
-                address: document.getElementById('shippingAddress').value,
-                city: document.getElementById('cityInput').value,
-                postcode: document.getElementById('postcode').value,
-                date: new Date().toLocaleString(),
-                paymentMethod: selectedPaymentMethod,
-                items: cart.map(i => ({ name: i.name, price: i.price, color: i.selectedColor, size: i.selectedSize, image: i.image })),
-                subtotal: subtotal,
-                shipping: shipping,
-                total: total,
-                status: 'pending'
-            };
+    let orderData = {
+        name: document.getElementById('fullName').value,
+        email: document.getElementById('emailAddress').value,
+        phone: document.getElementById('phoneNumber').value,
+        address: document.getElementById('shippingAddress').value,
+        city: document.getElementById('cityInput').value,
+        postcode: document.getElementById('postcode').value,
+        date: new Date().toLocaleString(),
+        paymentMethod: selectedPaymentMethod,
+        items: cart.map(i => ({ name: i.name, price: i.price, color: i.selectedColor, size: i.selectedSize, image: i.image })),
+        subtotal: subtotal,
+        shipping: shipping,
+        total: total,
+        status: 'pending'
+    };
 
-            let serverSaved = false;
-            try {
-                const response = await fetch(`${API_BASE}/orders`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(orderData)
-                });
-                serverSaved = response.ok;
-                if (!serverSaved) console.warn('Server rejected order:', response.status, await response.text().catch(() => ''));
-            } catch (error) {
-                console.warn('Could not reach order API, using local save:', error);
+    let serverSaved = false;
+    let finalOrderId = generateOrderId(); // احتياطي فقط لو السيرفر مش متجاوب
+    try {
+        const response = await fetch(`${API_BASE}/orders`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData)
+        });
+        serverSaved = response.ok;
+        if (serverSaved) {
+            const result = await response.json();
+            if (result.order && result.order.orderId) {
+                finalOrderId = result.order.orderId;
             }
+        } else {
+            console.warn('Server rejected order:', response.status, await response.text().catch(() => ''));
+        }
+    } catch (error) {
+        console.warn('Could not reach order API, using local save:', error);
+    }
 
-            finalizeOrderLocally(orderData, orderId);
-            if (!serverSaved) console.info('Order saved locally. Run "npm start" and open http://localhost:3000 for admin sync.');
-        };
+    orderData.orderId = finalOrderId;
+    finalizeOrderLocally(orderData, finalOrderId);
+    if (!serverSaved) console.info('Order saved locally. Run "npm start" and open http://localhost:3000 for admin sync.');
+};
 
         // ─── Order Now Banner (from ZIRA) ──────────────────────────────
         (function checkSharedProduct() {
