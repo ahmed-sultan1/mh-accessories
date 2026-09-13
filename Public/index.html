@@ -1224,7 +1224,12 @@
         let shippingPrices = getShippingPrices(); let freeShippingThreshold = getFreeShippingThreshold();
         function calculateShipping() { let sp = calculateShippingPrice(); currentShippingPrice = sp; let span = document.getElementById('shippingAmount'); if(span && !span.innerHTML.includes('لم نتعرف')) span.innerText = sp.toLocaleString() + ' EGP'; updateCartUI(); return sp; }
         function validateShippingForm() { let valid=true; let name = document.getElementById('fullName').value.trim(); let phone = document.getElementById('phoneNumber').value.trim(); let city = document.getElementById('cityInput').value.trim(); let address = document.getElementById('shippingAddress').value.trim(); if(!name){ document.getElementById('nameError').style.display='block'; valid=false; } else document.getElementById('nameError').style.display='none'; if(!phone){ document.getElementById('phoneError').style.display='block'; valid=false; } else document.getElementById('phoneError').style.display='none'; if(!city){ document.getElementById('cityError').style.display='block'; valid=false; } else document.getElementById('cityError').style.display='none'; if(!address){ document.getElementById('addressError').style.display='block'; valid=false; } else document.getElementById('addressError').style.display='none'; return valid; }
-        function validateArabicField(input){}
+        function validateArabicField(input) {
+    const arabicOnly = input.value.replace(/[^\u0600-\u06FF\s]/g, '');
+    if (arabicOnly !== input.value) {
+        input.value = arabicOnly;
+    }
+}
         function showToast(msg){ let t=document.createElement('div'); t.className='toast'; t.innerText=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
         function toggleCart(e){ if(e) e.stopPropagation(); document.getElementById('cartSidebar').classList.toggle('open'); if(document.getElementById('cartSidebar').classList.contains('open')) calculateShipping(); }
         function zoomImage(src){ let ov=document.createElement('div'); ov.className='image-zoom-overlay'; ov.onclick=()=>ov.remove(); let img=document.createElement('img'); img.src=src; ov.appendChild(img); document.body.appendChild(ov); }
@@ -1701,6 +1706,7 @@
                 normalized = normalized.replace(new RegExp(bad, 'g'), good);
             }
             normalized = normalized.trim().replace(/\s+/g, '');
+                if (normalized.startsWith('ال')) normalized = normalized.slice(2);
             return normalized;
         }
 
